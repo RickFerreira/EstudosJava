@@ -36,7 +36,7 @@ public class CarroAluguel {
     //Criando métodos extras
     public void alugar() throws CarroIndisponivelException {
         //muda o estado de um carro de “disponivel” para “indisponível”
-        if (!disponivel) {
+        if (!isDisponivel()) {
             //Exceção para avisar que o carro não está disponível
             throw new CarroIndisponivelException("O carro está indisponível.");
         }
@@ -46,12 +46,12 @@ public class CarroAluguel {
 
     public void devolver() throws CarroDisponivelException, CarroNaoPagoException {
         //devolve um carro alugado, tornando-o disponível novamente
-        if (disponivel) {
+        if (isDisponivel()) {
             //Exceção para avisar que o carro já está disponível, então não pode ser devolvido
             throw new CarroDisponivelException("O carro está disponível.");
         }
-        
-        if (debito > 0) {
+
+        if (getDebito() > 0) {
             //Exceção para avisar que o carro ainda tem debitos, então não pode ser devolvido
             throw new CarroNaoPagoException("O carro não foi pago.");
         }
@@ -70,24 +70,27 @@ public class CarroAluguel {
         //retorna true, quando houve sinistro e o seguro precisa ser acionado
         return sinistro;
     }
+    public void setSinistro(boolean sinistro) {
+        this.sinistro = sinistro; //define a distância percorrida pelo carro
+    }
 
     public float getDebito() {
         //retorna o valor a ser pago pelo aluguel do carro
-        float totalDebito = valorPorKm * distanciaPercorrida;
+        this.debito = valorPorKm * distanciaPercorrida;
         //soma-se mais 60% do débito ao valor total, se há sinistro
-        if (sinistro) {
-            totalDebito *= 1.6;
+        if (hasSinistro()) {
+            debito *= 1.6;
             sinistro = false; // Zerando o sinistro depois de pago
         }
-        return totalDebito;
+        return debito;
     }
 
-    public void pagar() throws CarroDisponivelException {
+    public void pagar() throws CarroDisponivelException{
         //Um carro disponível não pode ser pago
-        if (disponivel) {
+        if (isDisponivel()) {
             throw new CarroDisponivelException("O carro está disponível.");
         }
         //Zerando os debitos do carro
-        debito = 0;
+       distanciaPercorrida = 0;
     }
 }
