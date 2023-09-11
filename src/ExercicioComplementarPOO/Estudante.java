@@ -1,4 +1,4 @@
-public class Estudant {
+public class Estudante {
 
     //Declarando atributos
     private String nome;
@@ -8,7 +8,7 @@ public class Estudant {
     private double nota3;
 
     //Criando construtor
-    public Estudant(String nome, int matricula, double nota1, double nota2, double nota3) {
+    public Estudante(String nome, int matricula, double nota1, double nota2, double nota3) {
         this.nome = nome;
         this.matricula = matricula;
         this.nota1 = nota1;
@@ -47,9 +47,9 @@ public class Estudant {
     //Criando um main para testar os valores
     public static void main(String[] args) {
         // Criando dos objetos para a classe Estutant
-        Estudant estudante1 = new Estudant("Richard", 2023192, 75, 82, 90);
-        Estudant estudante2 = new Estudant("Rick", 2023200, 55, 100, 43);
-        Estudant estudante3 = new Estudant("Luna", 2023244, 60, 70, 80);
+        Estudante estudante1 = new Estudante("Richard", 2023192, 75, 82, 90);
+        Estudante estudante2 = new Estudante("Rick", 2023200, 55, 100, 43);
+        Estudante estudante3 = new Estudante("Luna", 2023244, 60, 70, 80);
 
         // Exibir informações das pessoas
         System.out.println("\nAluno(a): " + estudante1.getNome() + "\nMatrícula: " + estudante1.getMatricula());
