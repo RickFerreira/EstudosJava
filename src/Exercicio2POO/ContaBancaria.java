@@ -13,8 +13,8 @@ public class ContaBancaria {
         this.titular = titular;
         this.saldo = saldo;
         this.limiteChequeEspecial = limiteChequeEspecial;
-        this.horarioLimiteSaqueInicio = LocalTime.of(7, 0); // Horário de início dos saques permitidos (9:00)
-        this.horarioLimiteSaqueFim = LocalTime.of(18, 0);   // Horário de término dos saques permitidos (18:00)
+        this.horarioLimiteSaqueInicio = LocalTime.of(7, 0); // Horário de início dos saques permitidos
+        this.horarioLimiteSaqueFim = LocalTime.of(18, 0);   // Horário de término dos saques permitidos
     }
 
     public String getNumeroConta() {
