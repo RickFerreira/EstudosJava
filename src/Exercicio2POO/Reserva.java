@@ -7,8 +7,6 @@ public class Reserva {
     private double valorDiaria;
     private LocalDate dataCheckIn;
     private LocalDate dataCheckOut;
-    private int minDiarias;
-    private int maxDiarias;
 
     public Reserva(int numeroQuarto, String nomeHospede, double valorDiaria, LocalDate dataCheckIn,
             LocalDate dataCheckOut) {
@@ -17,8 +15,6 @@ public class Reserva {
         this.valorDiaria = valorDiaria;
         this.dataCheckIn = dataCheckIn;
         this.dataCheckOut = dataCheckOut;
-        this.minDiarias = minDiarias;
-        this.maxDiarias = maxDiarias;
     }
 
     public int getNumeroQuarto() {
@@ -33,51 +29,56 @@ public class Reserva {
     public LocalDate getDataCheckIn() {
         return dataCheckIn;
     }
-    public LocalDate getDataCheckOut() {
-        return dataCheckOut;
+
+
+    public void setNumeroQuarto(int numeroQuarto) {
+        this.numeroQuarto = numeroQuarto;
+    }
+    public void setNomeHospede(String nomeHospede) {
+        this.nomeHospede = nomeHospede;
+    }
+    public void setValorDiaria(double valorDiaria) {
+        this.valorDiaria = valorDiaria;
+    }
+    public void setDataCheckIn(LocalDate dataCheckIn) {
+        this.dataCheckIn = dataCheckIn;
+    }
+    public void setDataCheckOut(LocalDate dataCheckOut) {
+        this.dataCheckOut = dataCheckOut;
     }
 
-    public boolean reservar(LocalDate dataCheckOut){
-        if (dataCheckIn.isBefore(dataCheckOut) && isValidReservationPeriod(dataCheckOut)) {
-            this.dataCheckOut = dataCheckOut;
-            return true;
+
+    public void cancelarReserva() {
+        this.dataCheckIn = null;
+        this.dataCheckOut = null;
+    }
+
+    public int calcularNumeroDiarias() {
+        return (int) dataCheckIn.until(dataCheckOut).getDays();
+    }
+
+    public double aplicarDesconto() {
+        int numeroDiarias = calcularNumeroDiarias();
+        double desconto = 0.0;
+        //Desconto de 10% pra quem passa 7 dias ou mais
+        if (numeroDiarias >= 7) {
+            desconto = 0.1;
+        //Desconto de 5% pra quem passa 3 dias ou mais
+        } else if (numeroDiarias >= 3) {
+            desconto = 0.05;
         }
-        return false;
+
+        return valorDiaria * numeroDiarias * (1 - desconto);
     }
 
-    public boolean cancelarReserva(){
-        if (this.dataCheckOut != null) {
-            this.dataCheckOut = null;
-            return true;
-        }
-        return false;
-    }
 
-    public double calcularDias(){
-        if (dataCheckOut == null) {
-            return 0.0;
-        }
-        long numDiarias = ChronoUnit.DAYS.between(dataCheckIn, dataCheckOut);
-        double desconto = calcularDesconto(numDiarias);
-        return (numDiarias * valorPorDiaria) - desconto;
-    }
+    public static void main(String[] args) {
+        LocalDate checkIn = LocalDate.of(2023, 9, 14);
+        LocalDate checkOut = LocalDate.of(2023, 9, 20);
+        Reserva reserva = new Reserva(101, "João", 150.0, checkIn, checkOut);
 
-    private boolean isValidReservationPeriod(LocalDate checkOutDate) {
-        long numDiarias = ChronoUnit.DAYS.between(dataCheckIn, checkOutDate);
-        return numDiarias >= minDiarias && numDiarias <= maxDiarias;
-    }
-
-    private double calcularDesconto(long numDiarias) {
-        // Implemente a lógica de desconto aqui, se necessário
-        // Exemplo: 10% de desconto para mais de 5 diárias
-        if (numDiarias > 5) {
-            return 0.1 * (numDiarias * valorPorDiaria);
-        }
-        return 0.0;
-    }
-
-    public LocalDate getCheckOutDate() {
-        return dataCheckOut;
+        System.out.println("Número de diárias: " + reserva.calcularNumeroDiarias());
+        System.out.println("Valor total da reserva: " + reserva.aplicarDesconto());
     }
 
 }
