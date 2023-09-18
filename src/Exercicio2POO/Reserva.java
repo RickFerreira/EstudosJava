@@ -1,6 +1,5 @@
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-
+ 
 public class Reserva {
     private int numeroQuarto;
     private String nomeHospede;
@@ -60,10 +59,9 @@ public class Reserva {
     public double aplicarDesconto() {
         int numeroDiarias = calcularNumeroDiarias();
         double desconto = 0.0;
-        //Desconto de 10% pra quem passa 7 dias ou mais
+        //Desconto de 10% pra quem passa 7 dias ou mais, ou de 5% para 3 dias ou mais
         if (numeroDiarias >= 7) {
             desconto = 0.1;
-        //Desconto de 5% pra quem passa 3 dias ou mais
         } else if (numeroDiarias >= 3) {
             desconto = 0.05;
         }
@@ -73,12 +71,14 @@ public class Reserva {
 
 
     public static void main(String[] args) {
-        LocalDate checkIn = LocalDate.of(2023, 9, 14);
+        LocalDate checkIn = LocalDate.of(2023, 9, 10);
         LocalDate checkOut = LocalDate.of(2023, 9, 20);
-        Reserva reserva = new Reserva(101, "João", 150.0, checkIn, checkOut);
+        Reserva reserva = new Reserva(101, "Richard", 100.0, checkIn, checkOut);
 
+        System.out.println("\nHospede:" + reserva.getNomeHospede());
         System.out.println("Número de diárias: " + reserva.calcularNumeroDiarias());
         System.out.println("Valor total da reserva: " + reserva.aplicarDesconto());
+
     }
 
 }
