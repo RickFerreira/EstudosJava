@@ -8,10 +8,10 @@ public class ContaBancaria {
     private LocalTime horarioLimiteSaqueInicio;
     private LocalTime horarioLimiteSaqueFim;
 
-    public ContaBancaria(String numeroConta, String titular, double saldo, double limiteChequeEspecial) {
+    public ContaBancaria(String numeroConta, String titular, double limiteChequeEspecial) {
         this.numeroConta = numeroConta;
         this.titular = titular;
-        this.saldo = saldo;
+        this.saldo = 0;
         this.limiteChequeEspecial = limiteChequeEspecial;
         this.horarioLimiteSaqueInicio = LocalTime.of(7, 0); // Horário de início dos saques permitidos
         this.horarioLimiteSaqueFim = LocalTime.of(18, 0);   // Horário de término dos saques permitidos
@@ -42,14 +42,7 @@ public class ContaBancaria {
         if (valor > (saldo + limiteChequeEspecial)) {
             throw new saldoIndisponivelException("Não há saldo suficiente");
         }
-
-        // Aplica tarifa de juros para saques do cheque especial
-        if (valor > saldo) {
-            double juros = 0.1 * (valor - getSaldo());
-            saldo -= valor + juros; // 10% de juros
-        } else {
-            saldo -= valor;
-        }
+        saldo -= valor;
     }
 
     public class saldoIndisponivelException extends Exception {
@@ -64,7 +57,7 @@ public class ContaBancaria {
     }
 
     public static void main(String[] args) throws ContaBancaria.saldoIndisponivelException, ContaBancaria.horarioIndisponivelException {
-        ContaBancaria conta1 = new ContaBancaria("12345-6", "Richard", 100.00, 5000.00);
+        ContaBancaria conta1 = new ContaBancaria("12345-6", "Richard", 5000.00);
          
         System.out.println("\nOlá, " + conta1.getTitular() + " seu saldo é: R$ " + conta1.getSaldo() + "\n");
 
@@ -84,8 +77,16 @@ public class ContaBancaria {
         conta1.saque(2000.0);
         System.out.println(conta1.getTitular() + " seu saldo é: R$ " + conta1.getSaldo() + "\n");
 
-        System.out.println("Saque de R$ 2000");
-        conta1.saque(2000.0);
+        conta1.deposito(5000.00);
+        System.out.println("Deposito de R$ 5000");
+        System.out.println(conta1.getTitular() + " seu saldo é: R$ " + conta1.getSaldo() + "\n");
+
+        System.out.println("Saque de R$ 3000");
+        conta1.saque(3000.0);
+        System.out.println(conta1.getTitular() + " seu saldo é: R$ " + conta1.getSaldo() + "\n");
+
+        System.out.println("Saque de R$ 5000");
+        conta1.saque(5000.0);
         System.out.println(conta1.getTitular() + " seu saldo é: R$ " + conta1.getSaldo() + "\n");
     }
 }
